@@ -29,8 +29,10 @@ func (suite *urlRepositorySuite) TestUrlRepository_ShouldAddUrlToRepo() {
 
 	suite.urlRepo.Add(shortUrl, longUrl)
 
-	expected := map[types.ShortUrl]types.LongUrl{"domain://test-url.com": "https://test-12345678-test.com"}
-	actual := suite.urlRepo.Get()
+	expected := map[types.ShortUrl]types.LongUrl{shortUrl: longUrl}
+	reverseExpected := map[types.LongUrl]types.ShortUrl{longUrl: shortUrl}
+	actual, reverseActual := suite.urlRepo.Get()
 
 	suite.Assert().Equal(expected, actual)
+	suite.Assert().Equal(reverseExpected, reverseActual)
 }
