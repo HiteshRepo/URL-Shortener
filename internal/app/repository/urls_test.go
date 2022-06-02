@@ -36,3 +36,24 @@ func (suite *urlRepositorySuite) TestUrlRepository_ShouldAddUrlToRepo() {
 	suite.Assert().Equal(expected, actual)
 	suite.Assert().Equal(reverseExpected, reverseActual)
 }
+
+func (suite *urlRepositorySuite) TestUrlRepository_ShouldRemoveUrlFromRepo() {
+	shortUrl1 := types.ShortUrl("domain://test-url.com")
+	longUrl1 := types.LongUrl("https://test-12345678-test.com")
+
+	shortUrl2 := types.ShortUrl("domain://test-url-2.com")
+	longUrl2 := types.LongUrl("https://test-123456789-test.com")
+
+	suite.urlRepo.Add(shortUrl1, longUrl1)
+	suite.urlRepo.Add(shortUrl2, longUrl2)
+
+	expected := map[types.ShortUrl]types.LongUrl{shortUrl2: longUrl2}
+	reverseExpected := map[types.LongUrl]types.ShortUrl{longUrl2: shortUrl2}
+
+	suite.urlRepo.Remove(shortUrl1)
+
+	actual, reverseActual := suite.urlRepo.Get()
+
+	suite.Assert().Equal(expected, actual)
+	suite.Assert().Equal(reverseExpected, reverseActual)
+}

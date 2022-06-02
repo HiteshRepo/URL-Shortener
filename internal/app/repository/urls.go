@@ -16,6 +16,18 @@ func (ur *UrlRepository) Add(shortUrl types.ShortUrl, longUrl types.LongUrl) {
 	ur.reverseUrlMap[longUrl] = shortUrl
 }
 
+func (ur *UrlRepository) Remove(shortUrl types.ShortUrl) {
+	var lUrl types.LongUrl
+	var ok bool
+	if lUrl, ok = ur.urlMap[shortUrl]; ok {
+		delete(ur.urlMap, shortUrl)
+	}
+
+	if _, ok = ur.reverseUrlMap[lUrl]; ok {
+		delete(ur.reverseUrlMap, lUrl)
+	}
+}
+
 func (ur *UrlRepository) Get() (map[types.ShortUrl]types.LongUrl, map[types.LongUrl]types.ShortUrl) {
 	return ur.urlMap, ur.reverseUrlMap
 }
