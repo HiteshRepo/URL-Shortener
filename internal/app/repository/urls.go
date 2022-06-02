@@ -28,6 +28,10 @@ func (ur *UrlRepository) Remove(shortUrl types.ShortUrl) {
 	}
 }
 
+func (ur *UrlRepository) GetLongUrl(shortUrl types.ShortUrl) types.LongUrl {
+	return ur.urlMap[shortUrl]
+}
+
 func (ur *UrlRepository) Get() (map[types.ShortUrl]types.LongUrl, map[types.LongUrl]types.ShortUrl) {
 	return ur.urlMap, ur.reverseUrlMap
 }

@@ -57,3 +57,15 @@ func (suite *urlRepositorySuite) TestUrlRepository_ShouldRemoveUrlFromRepo() {
 	suite.Assert().Equal(expected, actual)
 	suite.Assert().Equal(reverseExpected, reverseActual)
 }
+
+func (suite *urlRepositorySuite) TestUrlRepository_ShouldGetLongUrlByShortUrl() {
+	shortUrl := types.ShortUrl("domain://test-url.com")
+	longUrl := types.LongUrl("https://test-12345678-test.com")
+
+	suite.urlRepo.Add(shortUrl, longUrl)
+
+	expected := longUrl
+	actual := suite.urlRepo.GetLongUrl(shortUrl)
+
+	suite.Assert().Equal(expected, actual)
+}
