@@ -28,6 +28,9 @@ func (suite *urlServiceSuite) SetupTest() {
 
 func (suite *urlServiceSuite) TestUrlService_ShortenUrlShouldGiveShortenedUrlOfLength7ForAGivenLongUrl() {
 	longUrl := types.LongUrl("https://a_very_log_url_to_be_shortened.com")
+
+	suite.urlRepo.On("GetShortUrlIfExists", longUrl).Return(types.ShortUrl(""))
+
 	shortUrl := suite.urlSvc.ShortenUrl(longUrl)
 
 	suite.Assert().True(len(shortUrl) == service.ShortenLength + len(service.Domain) + 1)
@@ -36,6 +39,10 @@ func (suite *urlServiceSuite) TestUrlService_ShortenUrlShouldGiveShortenedUrlOfL
 func (suite *urlServiceSuite) TestUrlService_ShortenUrlShouldGiveDifferentShortenedUrlsOfLength7ForAGivenDifferentLongUrls() {
 	longUrl1 := types.LongUrl("https://a_very_log_url_to_be_shortened1.com")
 	longUrl2 := types.LongUrl("https://a_very_log_url_to_be_shortened2.com")
+
+	suite.urlRepo.On("GetShortUrlIfExists", longUrl1).Return(types.ShortUrl(""))
+	suite.urlRepo.On("GetShortUrlIfExists", longUrl2).Return(types.ShortUrl(""))
+
 	shortUrl1 := suite.urlSvc.ShortenUrl(longUrl1)
 	shortUrl2 := suite.urlSvc.ShortenUrl(longUrl2)
 

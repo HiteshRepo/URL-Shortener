@@ -32,8 +32,22 @@ func (us urlService) ShortenUrl(longUrl types.LongUrl) types.ShortUrl {
 	}
 
 	randomNum := us.rangeIn(100000000000, 999999999999)
-	shortUrl := fmt.Sprintf("%s/%s", Domain, us.base62Encode(randomNum))
-	return types.ShortUrl(shortUrl)
+	shortUrl := types.ShortUrl(fmt.Sprintf("%s/%s", Domain, us.base62Encode(randomNum)))
+
+	done := false
+	for !done {
+		lUrl := us.urlRepo.GetLongUrl(shortUrl)
+		if len(lUrl) == 0 {
+			done = true
+			continue
+		}
+		randomNum = us.rangeIn(100000000000, 999999999999)
+		shortUrl = types.ShortUrl(fmt.Sprintf("%s/%s", Domain, us.base62Encode(randomNum)))
+	}
+
+	us.urlRepo.Add(shortUrl, longUrl)
+
+	return shortUrl
 }
 
 func (us urlService) GetOriginalUrl(shortUrl types.ShortUrl) types.LongUrl {
