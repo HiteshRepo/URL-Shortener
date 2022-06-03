@@ -1,4 +1,4 @@
 fileignoreconfig:
 - filename: go.sum
-  checksum: 3a1a4b31dac01aef6c96390835df52aac7d831c83ad17fe6509bf5b3ebfc9630
+  checksum: 55c792c5ca604b6615e782d1a6bdd92f865e078f0086f5e055fcae62a9da8216
 version: ""

@@ -1,8 +1,14 @@
 package service
 
 import (
+	"fmt"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/repository"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/types"
+)
+
+const (
+	Domain = "https://bitly.com"
+	ShortenLength = 7
 )
 
 type UrlService interface {
@@ -19,7 +25,8 @@ func ProvideUrlService(urlRepo repository.UrlRepository) UrlService {
 }
 
 func (us urlService) ShortenUrl(longUrl types.LongUrl) types.ShortUrl {
-	return ""
+	shortUrl := fmt.Sprintf("%s/%s", Domain, string(longUrl)[0:ShortenLength])
+	return types.ShortUrl(shortUrl)
 }
 
 func (us urlService) GetOriginalUrl(shortUrl types.ShortUrl) types.LongUrl {
