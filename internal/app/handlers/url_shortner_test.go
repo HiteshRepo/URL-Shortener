@@ -1,8 +1,8 @@
 package handlers_test
 
 import (
+	"bytes"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/handlers"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/service/mocks"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/types"
@@ -14,13 +14,9 @@ import (
 )
 
 func TestUrlShortenerHandler_UrlShortenerHandler(t *testing.T) {
-	req, _ := http.NewRequest("POST", "/shorten_url", nil)
+	var jsonStr = []byte(`{"long_url":"https://a_very_log_url_to_be_shortened1.com"}`)
+	req, _ := http.NewRequest("POST", "/shorten_url", bytes.NewBuffer(jsonStr))
 	req.Header.Set("Content-Type", "application/json")
-	vars := map[string]string{
-		"long_url": "https://a_very_log_url_to_be_shortened1.com",
-	}
-	req = mux.SetURLVars(req, vars)
-
 
 	w := httptest.NewRecorder()
 

@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/service"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/types"
 	"net/http"
@@ -22,11 +21,16 @@ func ProvideNewUrlShortenerHandler(urlSvc service.UrlService) *UrlShortenerHandl
 }
 
 func (ush *UrlShortenerHandler) UrlShortenerHandler(w http.ResponseWriter, r *http.Request) {
-	muxVar := mux.Vars(r)
-	longUrl := muxVar["long_url"]
+	var urlData map[string]string
+	decoder := json.NewDecoder(r.Body)
+
+	if err := decoder.Decode(&urlData); err != nil {
+		respondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	if r.Method == "POST" {
-		shortUrl := ush.urlSvc.ShortenUrl(types.LongUrl(longUrl))
+		shortUrl := ush.urlSvc.ShortenUrl(types.LongUrl(urlData["long_url"]))
 		respondWithJSON(w, http.StatusOK, map[string]string{"shortened_url": string(shortUrl)})
 	} else {
 		respondWithError(w, http.StatusMethodNotAllowed, fmt.Sprintf("%s method not supported", r.Method))
