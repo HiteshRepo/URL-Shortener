@@ -62,3 +62,12 @@ func (suite *urlServiceSuite) TestUrlService_ShortenUrlShouldGiveSameShortenedUr
 
 	suite.Assert().Equal(shortUrlFirstTime, shortUrlSecondTime)
 }
+
+func (suite *urlServiceSuite) TestUrlService_GetOriginalUrlShouldGiveLongUrlForGeneratedShortUrl() {
+	shortUrl := types.ShortUrl("https://bitly.com/aBcDeFg")
+	suite.urlRepo.On("GetLongUrl", shortUrl).Return(types.LongUrl("https://a_very_log_url_to_be_shortened.com"))
+
+	longUrl := suite.urlSvc.GetOriginalUrl(shortUrl)
+
+	suite.Assert().Equal(longUrl, types.LongUrl("https://a_very_log_url_to_be_shortened.com"))
+}

@@ -44,7 +44,7 @@ func (us urlService) ShortenUrl(longUrl types.LongUrl) types.ShortUrl {
 }
 
 func (us urlService) GetOriginalUrl(shortUrl types.ShortUrl) types.LongUrl {
-	return ""
+	return us.urlRepo.GetLongUrl(shortUrl)
 }
 
 func (us urlService) base62Encode(randomNum int64) string {
