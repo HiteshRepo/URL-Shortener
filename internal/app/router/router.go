@@ -9,6 +9,7 @@ func ProvideRouter(urlShortenerHandler *handlers.UrlShortenerHandler) *mux.Route
 	r := mux.NewRouter()
 
 	r.HandleFunc("/shorten_url", urlShortenerHandler.UrlShortenerHandler).Methods("POST")
+	r.HandleFunc("/fetch_url", urlShortenerHandler.FetchOriginalUrlHandler).Methods("GET")
 
 	return r
 }

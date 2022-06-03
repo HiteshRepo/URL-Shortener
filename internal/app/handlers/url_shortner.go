@@ -35,7 +35,23 @@ func (ush *UrlShortenerHandler) UrlShortenerHandler(w http.ResponseWriter, r *ht
 	} else {
 		respondWithError(w, http.StatusMethodNotAllowed, fmt.Sprintf("%s method not supported", r.Method))
 	}
+}
 
+func (ush *UrlShortenerHandler) FetchOriginalUrlHandler(w http.ResponseWriter, r *http.Request) {
+	var urlData map[string]string
+	decoder := json.NewDecoder(r.Body)
+
+	if err := decoder.Decode(&urlData); err != nil {
+		respondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if r.Method == "GET" {
+		longUrl := ush.urlSvc.GetOriginalUrl(types.ShortUrl(urlData["short_url"]))
+		respondWithJSON(w, http.StatusOK, map[string]string{"original_url": string(longUrl)})
+	} else {
+		respondWithError(w, http.StatusMethodNotAllowed, fmt.Sprintf("%s method not supported", r.Method))
+	}
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
