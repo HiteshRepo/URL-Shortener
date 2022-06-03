@@ -1,4 +1,6 @@
 fileignoreconfig:
 - filename: go.sum
   checksum: 55c792c5ca604b6615e782d1a6bdd92f865e078f0086f5e055fcae62a9da8216
+- filename: internal/app/service/urls.go
+  checksum: 4cacff62fa8d805c46c39e9ff89e5e6bb36c1962bc97cf3a93f3469a551773e9
 version: ""
