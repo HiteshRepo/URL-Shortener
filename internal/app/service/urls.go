@@ -13,6 +13,8 @@ const (
 	Base62 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 )
 
+var counter int64 = 100000000000
+
 type UrlService interface {
 	ShortenUrl(longUrl types.LongUrl) types.ShortUrl
 	GetOriginalUrl(shortUrl types.ShortUrl) types.LongUrl
@@ -31,19 +33,10 @@ func (us urlService) ShortenUrl(longUrl types.LongUrl) types.ShortUrl {
 		return sUrl
 	}
 
-	randomNum := us.rangeIn(100000000000, 999999999999)
+	randomNum := us.rangeIn(counter, 999999999999)
 	shortUrl := types.ShortUrl(fmt.Sprintf("%s/%s", Domain, us.base62Encode(randomNum)))
 
-	done := false
-	for !done {
-		lUrl := us.urlRepo.GetLongUrl(shortUrl)
-		if len(lUrl) == 0 {
-			done = true
-			continue
-		}
-		randomNum = us.rangeIn(100000000000, 999999999999)
-		shortUrl = types.ShortUrl(fmt.Sprintf("%s/%s", Domain, us.base62Encode(randomNum)))
-	}
+	counter += 1
 
 	us.urlRepo.Add(shortUrl, longUrl)
 
