@@ -57,3 +57,27 @@ func TestFileOperator_Read(t *testing.T) {
 	err = fo.Close()
 	require.NoError(t, err)
 }
+
+func TestFileOperator_AppendWrite(t *testing.T) {
+	wd, _ := os.Getwd()
+	file1Path := path.Join(wd, "../../../", "test/files", "file1.txt")
+
+	fo := file_operator.ProvideFileOperator(file1Path)
+	err := fo.Create()
+	require.NoError(t, err)
+
+	size, err := fo.Write("1. Hello world")
+	require.NoError(t, err)
+	assert.True(t, size > 0)
+
+	size, err = fo.Write("2. Hello world")
+	require.NoError(t, err)
+	assert.True(t, size > 0)
+
+	readData, err := fo.Read()
+	require.NoError(t, err)
+	assert.Equal(t, "1. Hello world\n2. Hello world", readData)
+
+	err = fo.Close()
+	require.NoError(t, err)
+}

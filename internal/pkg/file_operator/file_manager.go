@@ -40,6 +40,10 @@ func (fo *fileOperator) Create() error {
 }
 
 func (fo *fileOperator) Write(data string) (int, error) {
+	d, _ := fo.Read()
+	if len(d) > 0 {
+		data = "\n" + data
+	}
 	size, err := fo.file.WriteString(data)
 	if err != nil {
 		return 0, err
