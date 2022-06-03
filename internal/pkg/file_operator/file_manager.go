@@ -1,6 +1,7 @@
 package file_operator
 
 import (
+	"io/ioutil"
 	"os"
 )
 
@@ -21,7 +22,11 @@ func ProvideFileOperator(filePath string) FileOperator {
 }
 
 func (fo *fileOperator) Read() (string, error) {
-	return "", nil
+	data, err := ioutil.ReadFile(fo.filePath)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
 }
 
 func (fo *fileOperator) Create() error {
