@@ -5,6 +5,7 @@ import (
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/repository/mocks"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/service"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/types"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 	"testing"
 )
@@ -30,6 +31,7 @@ func (suite *urlServiceSuite) TestUrlService_ShortenUrlShouldGiveShortenedUrlOfL
 	longUrl := types.LongUrl("https://a_very_log_url_to_be_shortened.com")
 
 	suite.urlRepo.On("GetShortUrlIfExists", longUrl).Return(types.ShortUrl(""))
+	suite.urlRepo.On("Add", mock.Anything, mock.Anything)
 
 	shortUrl := suite.urlSvc.ShortenUrl(longUrl)
 
@@ -42,6 +44,8 @@ func (suite *urlServiceSuite) TestUrlService_ShortenUrlShouldGiveDifferentShorte
 
 	suite.urlRepo.On("GetShortUrlIfExists", longUrl1).Return(types.ShortUrl(""))
 	suite.urlRepo.On("GetShortUrlIfExists", longUrl2).Return(types.ShortUrl(""))
+
+	suite.urlRepo.On("Add", mock.Anything, mock.Anything)
 
 	shortUrl1 := suite.urlSvc.ShortenUrl(longUrl1)
 	shortUrl2 := suite.urlSvc.ShortenUrl(longUrl2)
