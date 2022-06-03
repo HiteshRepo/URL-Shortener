@@ -11,7 +11,7 @@ import (
 type urlRepositorySuite struct {
 	suite.Suite
 	ctx     context.Context
-	urlRepo *repository.UrlRepository
+	urlRepo repository.UrlRepository
 }
 
 func TestUrlRepository(t *testing.T) {
@@ -31,7 +31,7 @@ func (suite *urlRepositorySuite) TestUrlRepository_ShouldAddUrlToRepo() {
 
 	expected := map[types.ShortUrl]types.LongUrl{shortUrl: longUrl}
 	reverseExpected := map[types.LongUrl]types.ShortUrl{longUrl: shortUrl}
-	actual, reverseActual := suite.urlRepo.Get()
+	actual, reverseActual := suite.urlRepo.GetAll()
 
 	suite.Assert().Equal(expected, actual)
 	suite.Assert().Equal(reverseExpected, reverseActual)
@@ -52,7 +52,7 @@ func (suite *urlRepositorySuite) TestUrlRepository_ShouldRemoveUrlFromRepo() {
 
 	suite.urlRepo.Remove(shortUrl1)
 
-	actual, reverseActual := suite.urlRepo.Get()
+	actual, reverseActual := suite.urlRepo.GetAll()
 
 	suite.Assert().Equal(expected, actual)
 	suite.Assert().Equal(reverseExpected, reverseActual)
