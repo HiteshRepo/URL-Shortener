@@ -29,19 +29,13 @@ func ProvideUrlService(urlRepo repository.UrlRepository) UrlService {
 }
 
 func (us urlService) ShortenUrl(longUrl types.LongUrl) types.ShortUrl {
-	fmt.Println(longUrl)
-	fmt.Println(counter)
 	if sUrl := us.urlRepo.GetShortUrlIfExists(longUrl); len(sUrl) > 0 {
-		fmt.Println(longUrl)
-		fmt.Println(sUrl)
 		return sUrl
 	}
 
-	fmt.Println("generating")
 	randomNum := us.rangeIn(counter, 999999999999)
 	shortUrl := types.ShortUrl(fmt.Sprintf("%s/%s", Domain, us.base62Encode(randomNum)))
 
-	fmt.Println(shortUrl)
 	counter += 1
 
 	us.urlRepo.Add(shortUrl, longUrl)
