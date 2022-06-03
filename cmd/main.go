@@ -1,33 +1,28 @@
 package main
 
 import (
-	"fmt"
-	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/repository"
-	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/router"
-	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/service"
+	"context"
+	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/di"
 	"log"
-	"net/http"
-	"time"
-)
-
-const (
-	Host = "localhost"
-	Port = 9091
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
-	urlRepo := repository.ProvideNewUrlRepository()
-	urlSvc := service.ProvideUrlService(urlRepo)
-	r := router.ProvideRouter(urlSvc)
-
-	srv := http.Server{
-		Addr:         fmt.Sprintf("%s:%d", Host, Port),
-		Handler:      r,
-		WriteTimeout: 15 * time.Second,
-		ReadTimeout:  15 * time.Second,
+	ctx := context.Background()
+	app, err := di.InitializeApp(ctx)
+	if err != nil {
+		log.Fatalf("failed to start server: %v", err)
 	}
 
-	log.Println("Starting server")
-	log.Fatal(srv.ListenAndServe())
+	app.Start()
+	<-interrupt()
+	app.Shutdown()
+}
 
+func interrupt() chan os.Signal {
+	interrupt := make(chan os.Signal, 1)
+	signal.Notify(interrupt, syscall.SIGINT, syscall.SIGTERM)
+	return interrupt
 }
