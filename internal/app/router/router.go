@@ -2,20 +2,16 @@ package router
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/hiteshpattanayak-tw/golangtraining/new_books_api/internal/app/handlers"
-	"github.com/hiteshpattanayak-tw/golangtraining/new_books_api/internal/app/services"
+	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/handlers"
+	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/service"
 )
 
-func ProvideRouter(bookService services.BooksService) *mux.Router {
+func ProvideRouter(urlSvc service.UrlService) *mux.Router {
 	r := mux.NewRouter()
 
-	healthHandler := handlers.HealthHandler{}
-	booksHandler := handlers.GetNewBooksHandler(bookService)
+	urlShortenerHandler := handlers.ProvideNewUrlShortenerHandler(urlSvc)
 
-	r.HandleFunc("/health", healthHandler.HandlerFunc).Methods("GET")
-	r.HandleFunc("/books/all", booksHandler.BooksHandler).Methods("GET")
-	r.HandleFunc("/books", booksHandler.UpsertBookHandler).Methods("POST", "PUT")
-	r.HandleFunc("/books/{isbn:[0-9]+}", booksHandler.AddOrRemoveBookHandler).Methods("GET", "DELETE")
+	r.HandleFunc("/shorten_url", urlShortenerHandler.UrlShortenerHandler).Methods("POST")
 
 	return r
 }
