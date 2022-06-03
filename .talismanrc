@@ -1,6 +1,8 @@
 fileignoreconfig:
 - filename: go.sum
-  checksum: 55c792c5ca604b6615e782d1a6bdd92f865e078f0086f5e055fcae62a9da8216
+  checksum: 6ec112a676d69c2d18ff33d25a8f4c9f6d583fb168602ac2ae3c24a0e46ac756
 - filename: internal/app/service/urls.go
   checksum: 4cacff62fa8d805c46c39e9ff89e5e6bb36c1962bc97cf3a93f3469a551773e9
+- filename: internal/app/handlers/url_shortner.go
+  checksum: 62d39dec2abb086ba4d70567d46957c1a9a218707f37774f8d68fb2fa95cb4c1
 version: ""
