@@ -41,3 +41,13 @@ func (suite *urlServiceSuite) TestUrlService_ShortenUrlShouldGiveDifferentShorte
 
 	suite.Assert().NotEqual(shortUrl1, shortUrl2)
 }
+
+func (suite *urlServiceSuite) TestUrlService_ShortenUrlShouldGiveSameShortenedUrlsOfLength7ForAGivenLongUrl() {
+	longUrl := types.LongUrl("https://a_very_log_url_to_be_shortened.com")
+	suite.urlRepo.On("GetShortUrlIfExists", longUrl).Return(types.ShortUrl("shortUrl"))
+
+	shortUrlFirstTime := suite.urlSvc.ShortenUrl(longUrl)
+	shortUrlSecondTime := suite.urlSvc.ShortenUrl(longUrl)
+
+	suite.Assert().Equal(shortUrlFirstTime, shortUrlSecondTime)
+}
