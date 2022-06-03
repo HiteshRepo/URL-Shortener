@@ -35,8 +35,11 @@ func (fo *fileOperator) Create() error {
 }
 
 func (fo *fileOperator) Write(data string) (int, error) {
-	_ = data
-	return -1, nil
+	size, err := fo.file.WriteString(data)
+	if err != nil {
+		return 0, err
+	}
+	return size, nil
 }
 
 func (fo *fileOperator) Close() error {
