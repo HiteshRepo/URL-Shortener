@@ -59,6 +59,20 @@ func (_m *UrlRepository) GetLongUrl(shortUrl types.ShortUrl) types.LongUrl {
 	return r0
 }
 
+// GetShortUrlIfExists provides a mock function with given fields: longUrl
+func (_m *UrlRepository) GetShortUrlIfExists(longUrl types.LongUrl) types.ShortUrl {
+	ret := _m.Called(longUrl)
+
+	var r0 types.ShortUrl
+	if rf, ok := ret.Get(0).(func(types.LongUrl) types.ShortUrl); ok {
+		r0 = rf(longUrl)
+	} else {
+		r0 = ret.Get(0).(types.ShortUrl)
+	}
+
+	return r0
+}
+
 // Remove provides a mock function with given fields: shortUrl
 func (_m *UrlRepository) Remove(shortUrl types.ShortUrl) {
 	_m.Called(shortUrl)

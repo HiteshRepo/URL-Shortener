@@ -6,6 +6,7 @@ type UrlRepository interface {
 	Add(shortUrl types.ShortUrl, longUrl types.LongUrl)
 	Remove(shortUrl types.ShortUrl)
 	GetLongUrl(shortUrl types.ShortUrl) types.LongUrl
+	GetShortUrlIfExists(longUrl types.LongUrl) types.ShortUrl
 	GetAll() (map[types.ShortUrl]types.LongUrl, map[types.LongUrl]types.ShortUrl)
 }
 
@@ -37,6 +38,13 @@ func (ur *urlRepository) Remove(shortUrl types.ShortUrl) {
 
 func (ur *urlRepository) GetLongUrl(shortUrl types.ShortUrl) types.LongUrl {
 	return ur.urlMap[shortUrl]
+}
+
+func (ur *urlRepository) GetShortUrlIfExists(longUrl types.LongUrl) types.ShortUrl {
+	if sUrl,ok := ur.reverseUrlMap[longUrl]; ok {
+		return sUrl
+	}
+	return ""
 }
 
 func (ur *urlRepository) GetAll() (map[types.ShortUrl]types.LongUrl, map[types.LongUrl]types.ShortUrl) {

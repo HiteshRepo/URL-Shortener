@@ -69,3 +69,15 @@ func (suite *urlRepositorySuite) TestUrlRepository_ShouldGetLongUrlByShortUrl() 
 
 	suite.Assert().Equal(expected, actual)
 }
+
+func (suite *urlRepositorySuite) TestUrlRepository_ShouldGetShortUrlByLongUrl() {
+	shortUrl := types.ShortUrl("domain://test-url.com")
+	longUrl := types.LongUrl("https://test-12345678-test.com")
+
+	suite.urlRepo.Add(shortUrl, longUrl)
+
+	expected := shortUrl
+	actual := suite.urlRepo.GetShortUrlIfExists(longUrl)
+
+	suite.Assert().Equal(expected, actual)
+}
