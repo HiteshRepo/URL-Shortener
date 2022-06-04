@@ -22,7 +22,7 @@ func (a *App) Start() {
 		ReadTimeout:  15 * time.Second,
 	}
 
-	log.Println("Starting server")
+	log.Println("Starting server and listening at ", srv.Addr)
 	log.Fatal(srv.ListenAndServe())
 }
 
