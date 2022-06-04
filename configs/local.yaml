@@ -1,0 +1,4 @@
+app:
+  serviceName: "url_shortener"
+  host: "127.0.0.1"
+  port: 9091

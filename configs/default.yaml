@@ -1,0 +1,4 @@
+app:
+  serviceName: "url_shortner"
+  host: ${HOST}
+  port: ${PORT}

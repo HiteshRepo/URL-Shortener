@@ -3,23 +3,20 @@ package app
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/hiteshpattanayak-tw/url_shortner/internal/pkg/configs"
 	"log"
 	"net/http"
 	"time"
 )
 
-const (
-	Host = "localhost"
-	Port = 9091
-)
-
 type App struct {
-	Router  *mux.Router
+	Router    *mux.Router
+	AppConfig *configs.AppConfig
 }
 
 func (a *App) Start() {
 	srv := http.Server{
-		Addr:         fmt.Sprintf("%s:%d", Host, Port),
+		Addr:         fmt.Sprintf("%s:%d", a.AppConfig.ServerConfig.Host, a.AppConfig.ServerConfig.Port),
 		Handler:      a.Router,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

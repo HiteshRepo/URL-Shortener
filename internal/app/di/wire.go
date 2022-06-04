@@ -13,6 +13,7 @@ import (
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/repository"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/router"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/service"
+	"github.com/hiteshpattanayak-tw/url_shortner/internal/pkg/configs"
 )
 
 func InitializeApp(ctx context.Context) (*app.App, error) {
@@ -21,6 +22,7 @@ func InitializeApp(ctx context.Context) (*app.App, error) {
 		handlers.ProvideNewUrlShortenerHandler,
 		service.ProvideUrlService,
 		router.ProvideRouter,
+		configs.ProvideAppConfig,
 
 		wire.Struct(new(app.App), "*"),
 	)

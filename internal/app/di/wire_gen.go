@@ -13,6 +13,7 @@ import (
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/repository"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/router"
 	"github.com/hiteshpattanayak-tw/url_shortner/internal/app/service"
+	"github.com/hiteshpattanayak-tw/url_shortner/internal/pkg/configs"
 )
 
 // Injectors from wire.go:
@@ -22,8 +23,13 @@ func InitializeApp(ctx context.Context) (*app.App, error) {
 	urlService := service.ProvideUrlService(urlRepository)
 	urlShortenerHandler := handlers.ProvideNewUrlShortenerHandler(urlService)
 	muxRouter := router.ProvideRouter(urlShortenerHandler)
+	appConfig, err := configs.ProvideAppConfig()
+	if err != nil {
+		return nil, err
+	}
 	appApp := &app.App{
-		Router: muxRouter,
+		Router:    muxRouter,
+		AppConfig: appConfig,
 	}
 	return appApp, nil
 }
